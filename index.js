@@ -1,12 +1,15 @@
 const express = require('express');
 const app = express()
-const morgan = require('morgan')
+// const morgan = require('morgan')
+const cors = require('cors')
+
+app.use(cors())
 
 app.use(express.json())
 
-morgan.token('body1',function (req,res) { return req.body})
+// morgan.token('body1',function (req,res) { return req.body})
 // app.use(morgan('tiny'))
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body1'))
+// app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body1'))
 
 let contacts = [
       {
@@ -91,7 +94,7 @@ app.post('/api/persons',(req,res) => {
     res.send(newPerson)
 })
 
-const port = 3001;
+const port = process.env.PORT || 3001;
 app.listen(port,() => {
     console.log(`listening at port ${port}`)
 } )
