@@ -1,8 +1,10 @@
+require('dotenv').config()
 const express = require('express');
 const app = express()
 // const morgan = require('morgan')
 const cors = require('cors')
 const path = require('path')
+const Person = require('./Mongo')
 
 app.use(cors())
 
@@ -42,7 +44,11 @@ let contacts = [
     ]
 
 app.get('/api/persons',(req,res) => {
-    res.send(contacts)
+    Person.find({})
+    .then(response => {
+        res.json(response.map(ele => ele.toJSON()))
+    })
+    // res.send(contacts)
 })
 
 app.get('/info',(req,res)=> {
@@ -87,13 +93,15 @@ app.post('/api/persons',(req,res) => {
             error:"number is required"
         })
     }
-    const newPerson = {
+    const newPerson = new Person({
         name: body.name,
-        number:body.number,
-        id: Math.floor(Math.random()*500000)
-    }
+        number:body.number
+        // id: Math.floor(Math.random()*500000)
+    })
     contacts = [...contacts,newPerson]
-    res.send(newPerson)
+    // res.send(newPerson)
+    newPerson.save()
+    .then(response => res.json(response.toJSON()))
 })
 
 const port = process.env.PORT || 3001;
