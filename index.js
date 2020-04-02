@@ -83,7 +83,7 @@ app.delete('/api/persons/:id', (req,res) => {
     Person.findByIdAndDelete(id)
     .then(resp => {console.log(resp)
         res.status(204).send('person deleted')})
-    .catch(err => console.log(err))
+    .catch(err => next(err))
 })
 
 app.post('/api/persons',(req,res) => {
@@ -108,6 +108,25 @@ app.post('/api/persons',(req,res) => {
     newPerson.save()
     .then(response => res.json(response.toJSON()))
 })
+
+
+const unknownEndpoint = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+  }
+
+app.use(unknownEndpoint)
+
+const errorHandler = (error, req,res,next) => {
+    console.log(error.message)
+
+    if(error.name === 'CastError' && error.kind === 'ObjectId'){
+        return res.status(400).send({err:'malformatted Id'})
+    }
+
+    next(error)
+}
+
+app.use(errorHandler)
 
 const port = process.env.PORT || 3001;
 app.listen(port,() => {
