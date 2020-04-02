@@ -15,34 +15,6 @@ app.use(express.json())
 // app.use(morgan('tiny'))
 // app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body1'))
 
-// let contacts = [
-//       {
-//         "name": "Arto Hellas",
-//         "number": "040-123456",
-//         "id": 1
-//       },
-//       {
-//         "name": "Ada Lovelace",
-//         "number": "39-44-5323523",
-//         "id": 2
-//       },
-//       {
-//         "name": "Dan Abramov",
-//         "number": "12-43-234345",
-//         "id": 3
-//       },
-//       {
-//         "name": "Mary Poppendieck",
-//         "number": "39-23-6423122",
-//         "id": 4
-//       },
-//       {
-//         "name": "asw",
-//         "id": 7,
-//         "number": "12"
-//       }
-//     ]
-
 app.get('/api/persons',(req,res,next) => {
     Person.find({})
     .then(response => {
@@ -60,16 +32,6 @@ app.get('/info',(req,res,next)=> {
 
 app.get('/api/persons/:id',(req,res,next) => {
     const id = req.params.id
-    // const person = contacts.find((ele) => ele.id === id)
-    // console.log(person)
-    // if(!person){
-    // res.status(404).json({
-    //     error: "person not found"
-    // })
-    // }
-    // else{
-        
-    // }
     Person.find({_id:id})
     .then(resp => res.send(resp))
     .catch(err => next(err))
