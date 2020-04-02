@@ -81,7 +81,8 @@ app.delete('/api/persons/:id', (req,res) => {
     //     res.send('person not found').status(404)
     console.log(id)
     Person.findByIdAndDelete(id)
-    .then(resp => console.log(resp))
+    .then(resp => {console.log(resp)
+        res.status(204).send('person deleted')})
     .catch(err => console.log(err))
 })
 
