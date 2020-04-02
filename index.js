@@ -1,6 +1,6 @@
-require('dotenv').config()
 const express = require('express');
 const app = express()
+require('dotenv').config()
 // const morgan = require('morgan')
 const cors = require('cors')
 const path = require('path')
@@ -72,13 +72,15 @@ app.get('/api/persons/:id',(req,res) => {
 
 app.delete('/api/persons/:id', (req,res) => {
     const id = Number(req.params.id)
-    const person = contacts.find((ele) => ele.id === id)
-    if(person){
-    contacts = contacts.filter(contact => contact.id !== id)
-    res.status(204).send('person deleted')
-    }
-    else
-        res.send('person not found').status(404)
+    // const person = contacts.find((ele) => ele.id === id)
+    // if(person){
+    // contacts = contacts.filter(contact => contact.id !== id)
+    // res.status(204).send('person deleted')
+    // }
+    // else
+    //     res.send('person not found').status(404)
+    Person.find({id})
+    .then(resp => console.log(resp))
 })
 
 app.post('/api/persons',(req,res) => {
