@@ -79,7 +79,7 @@ app.delete('/api/persons/:id', (req,res) => {
     // }
     // else
     //     res.send('person not found').status(404)
-    Person.find({id})
+    Person.findById(id)
     .then(resp => console.log(resp))
 })
 
