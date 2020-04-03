@@ -1,11 +1,6 @@
 const mongoose = require('mongoose')
+var uniqueValidator = require('mongoose-unique-validator');
 
-// if ( process.argv.length<3 ) {
-//   console.log('give password as argument')
-//   process.exit(1)
-// }
-
-// const password = process.argv[2]
 console.log(process.env.MONGODB_URI)
 const url = process.env.MONGODB_URI
 
@@ -15,9 +10,19 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
 
 
 const personSchema = new mongoose.Schema({
-    name: String,
-    number: Number
+    name: {
+        type:String,
+        unique:true,
+        required:true,
+        minlength:3
+    },
+    number: {
+        type:Number,
+        minlength:8,
+        required:true
+    }
 })
+personSchema.plugin(uniqueValidator);
 
 personSchema.set('toJSON', {
     transform: (document, returnedObject) => {
@@ -26,26 +31,5 @@ personSchema.set('toJSON', {
       delete returnedObject.__v
     }
   })
-
-// if(process.argv[4]){
-
-// const person = new Person({
-//     name: process.argv[3],
-//     number: process.argv[4]
-// })
-
-// person.save()
-// .then(res => {
-//     console.log(res)
-//     mongoose.connection.close()
-// })
-// }
-// else {
-//     Person.find({})
-//     .then(res => {
-//         res.forEach(person => console.log(person))
-//         mongoose.connection.close()
-//     })
-// }
 
 module.exports = mongoose.model('Person', personSchema)
